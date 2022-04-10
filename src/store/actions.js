@@ -10,17 +10,27 @@ export default {
                 }
                 context.commit('editTodoList', editList)
                 resolve('编辑成功')
+                let currentIndex = context.state.currentDateTodo.find(item => item.id == payload.id)
+                if (currentIndex) {
+                    const editList = {
+                        newList: payload,
+                        oldList: currentIndex
+                    }
+                    context.commit('editCurrentList', editList)
+                }
             } else {
                 // 如果原先没有，就是新建，要添加元素
                 context.commit('addTodoList', payload)
                 resolve('新建成功')
-            }
-            // 如果提交的日期是当前日期，就再保存到 currentDateTodo
-            const date = new Date()
 
-            if (payload.time.toDateString() == date.toDateString()) {
-                context.commit("saveCurrentList", payload);
+                // 如果提交的日期是当前日期，就再保存到 currentDateTodo
+                const date = new Date()
+
+                if (payload.time.toDateString() == date.toDateString()) {
+                    context.commit("saveCurrentList", payload);
+                }
             }
+
 
         })
     },
@@ -33,7 +43,9 @@ export default {
     },
     selectList(context) {
         let selectList = context.state.todoList.filter((item) => {
-            return item.time.toDateString() == context.state.selectTime.toDateString();
+            const date = new Date(item.time)
+            const selectTime = new Date(context.state.selectTime)
+            return date.toDateString() == selectTime.toDateString();
         });
         context.commit("saveSelectList", selectList);
     }

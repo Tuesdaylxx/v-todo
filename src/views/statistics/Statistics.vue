@@ -22,7 +22,7 @@
     <div class="week">
       <h4>一周事件统计</h4>
       <p>
-        本周共完成 <span> {{ weekDone != 0 ? weekDone : 25 }} </span> 项事项
+        本周共完成 <span> {{ weekDoneLength || 25 }} </span> 项事项
       </p>
       <chart class="chart"></chart>
     </div>
@@ -61,29 +61,17 @@ import { refreshYesterday } from "@/common/utils";
 export default {
   name: "Statistics",
   data() {
-    return {
-      weekDone: 0,
-    };
+    return {};
   },
   components: { Chart },
-  watch: {
-    isChange() {
+
+  mounted() {
+    this.$bus.$on("getYesterday", () => {
       let yesterdayList = refreshYesterday(this.$store.state.todoList);
       this.$store.commit("getYesterdayList", yesterdayList);
-    },
-  },
-  mounted() {
-    this.$bus.$on("getWeekDone", (weekDone) => {
-      this.weekDone = weekDone.reduce((prevValue, n) => {
-        return prevValue + n;
-      });
-      console.log(this.weekDone);
     });
   },
   computed: {
-    isChange() {
-      return this.$store.state.todoList;
-    },
     yesterdayDone() {
       return this.$store.getters.totalDone != 0
         ? this.$store.getters.yesterdayDone
@@ -93,6 +81,12 @@ export default {
       return this.$store.getters.totalRate != 0
         ? this.$store.getters.yesterdayRate
         : 65;
+    },
+
+    weekDoneLength() {
+      return this.$store.state.weekDoneLength.reduce((prevValue, n) => {
+        return prevValue + n;
+      });
     },
     totalDone() {
       return this.$store.getters.totalDone != 0
@@ -142,7 +136,7 @@ h2 {
 }
 .yesterday .count span {
   font-size: 32px;
-  color: rgb(29, 29, 29);
+  color: var(--color-tint);
 }
 .yesterday .top-info {
   margin-bottom: 15px;

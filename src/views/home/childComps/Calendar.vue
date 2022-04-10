@@ -36,21 +36,33 @@ export default {
       isIconShow: true,
     };
   },
+  mounted() {
+    // 刷新页面时，显示当前日期页面
+    const date = new Date();
+    this.changeDate(date);
 
+    // 关闭日历
+    document.addEventListener("click", (e) => {
+      if (!this.$el.contains(e.target)) {
+        this.shrinkCalendar();
+      }
+    });
+  },
   methods: {
     // 展开关闭日历
     extendCalendar() {
       this.isExtend = { height: "340px" };
-      this.isIconShow = !this.isIconShow;
+      this.isIconShow = false;
     },
     shrinkCalendar() {
       this.isExtend = { height: "100px" };
-      this.isIconShow = !this.isIconShow;
+      this.isIconShow = true;
     },
     // 重置日期
     resetDate() {
       this.$refs.calendar.reset();
-      // this.$refs.calendar.scrollToDate(new Date());
+      const date = new Date();
+      this.changeDate(date);
     },
     // 切换日程
     changeDate(val) {
@@ -61,25 +73,12 @@ export default {
     formatter(day) {
       const calendarDate = day.date.toDateString();
       const now = new Date();
-      // 设置星期颜色
-      /*  const week = day.date.getDay();
-      const nowWeek = now.getDay();
-      if (week === nowWeek) {
-        let currentWeek = document.getElementsByClassName(
-          "van-calendar__weekday"
-        );
-        currentWeek.style.color = "red";
-      } */
+
       // 遍历所有待办，筛选出有待办的日期
       this.$store.state.todoList.forEach((item) => {
         if (calendarDate == item.formatTime) {
           day.bottomInfo = "";
           day.className = "todo";
-          /*   if (this.$store.getters.currentTodoList.length != 0) {
-             } else {
-               day.bottomInfo = "";
-               day.className = "done";
-          } */
         }
       });
 
@@ -124,9 +123,7 @@ export default {
 .calendar >>> .van-calendar__weekday {
   color: rgb(219, 219, 253);
 }
-/* .calendar >>> .van-calendar__weekday:nth-child(1) {
-  color: rgb(255, 255, 255);
-} */
+
 .calendar >>> .van-calendar__selected-day {
   background-color: #fff;
   border-radius: 50%;
@@ -145,11 +142,4 @@ export default {
   border-radius: 50%;
   background: #fa6861;
 }
-::v-deep .weekDay {
-  font-size: 50px;
-  background-color: aqua;
-}
-/* ::v-deep .done::before {
-  background: green;
-} */
 </style>

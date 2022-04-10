@@ -35,8 +35,8 @@ export default {
     },
     linkToStatistics() {
       this.$router.replace("/statistics");
-      this.$bus.$emit("refreshYesterday");
-      this.$bus.$emit("showChart");
+      this.$bus.$emit("getYesterday");
+      // this.$bus.$emit("showChart");
     },
     linkToProfile() {
       this.$router.replace("/profile");

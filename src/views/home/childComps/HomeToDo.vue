@@ -47,6 +47,7 @@ export default {
       activeNames: ["1"],
     };
   },
+
   computed: {
     ...mapGetters(["currentTodoList", "currentDoneList"]),
     // 待办事项标题

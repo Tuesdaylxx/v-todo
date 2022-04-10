@@ -1,6 +1,10 @@
 <template>
   <div class="chart">
-    <line-chart id="myChart" :xAxisData="xAxisData" :seriesData="seriesData" />
+    <line-chart
+      id="myChart"
+      :xAxisData="xAxisData"
+      :seriesData="seriesReal || seriesCase"
+    />
   </div>
 </template>
 
@@ -14,9 +18,11 @@ export default {
     return {
       active: 0,
       xAxisData: [],
-      seriesData: [3, 4, 3, 6, 4, 6, 5],
+      seriesCase: [3, 4, 3, 6, 4, 6, 5],
+      seriesReal: [],
     };
   },
+
   mounted() {
     //获取最近七天的时间
     function getBeforeDate(n) {
@@ -52,13 +58,12 @@ export default {
         let d = date1.getDate();
         return year == y && mon == m && day == d && item.done == true;
       });
-
       let number = this.$store.state.todoList.find((item) => {
         return item.done == true;
       });
       if (number) {
-        this.seriesData.unshift(done.length);
-        this.$bus.$emit("getWeekDone", this.seriesData);
+        this.seriesReal.unshift(done.length);
+        this.$store.commit("getWeekDoneLength", this.seriesReal);
       }
     }
   },

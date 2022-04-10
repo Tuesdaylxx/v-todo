@@ -6,7 +6,6 @@
         <div class="item-content">
           <slot name="content"></slot>
         </div>
-        <van-icon name="ellipsis" />
       </div>
       <template #right>
         <slot name="delete"></slot>
@@ -46,11 +45,5 @@ export default {
   font-weight: 700;
   font-size: 20px;
   margin: 0 15px 0 5px;
-}
-.list-bar-item >>> .van-icon-ellipsis {
-  width: 36px;
-  font-weight: 900;
-  margin-right: -5px;
-  transform: rotate(90deg);
 }
 </style>

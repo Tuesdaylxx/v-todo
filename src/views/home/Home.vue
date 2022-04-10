@@ -34,9 +34,7 @@ export default {
   },
   computed: {
     notEmpty() {
-      return (
-        this.$store.getters.todoListLength || this.$store.getters.doneListLength
-      );
+      return this.$store.state.currentDateTodo.length != 0;
     },
   },
 

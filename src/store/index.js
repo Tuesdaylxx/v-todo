@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import createPersistedState from "vuex-persistedstate"
 Vue.use(Vuex)
 
 import getters from './getters'
@@ -19,6 +20,9 @@ const state = {
   // 昨日完成待办
   yesterdayList: [],
 
+  // 一周完成待办
+  weekDoneLength: [],
+
   // 倒计时
   countDown: 0,
 
@@ -34,6 +38,7 @@ const state = {
 
 }
 export default new Vuex.Store({
+  plugins: [createPersistedState()],
   state: state,
   getters: getters,
   mutations: mutations,

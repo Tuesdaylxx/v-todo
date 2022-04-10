@@ -1,16 +1,14 @@
 export function refreshYesterday(todoList) {
-    const yesterday = new Date();
-    yesterday.setTime(yesterday.getTime() - 24 * 60 * 60 * 1000);
-    let formatYesterday = (yesterday + "").substring(0, 15);
+    const date = new Date();
+    let yesterday = date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+    const stringYesterday = new Date(yesterday);
+    let formatYesterday = stringYesterday.toDateString();
 
-    function yesterdayTodo(val) {
-        let formatTodo = (val.time + "").substring(0, 15);
+    let yesterdayList = todoList.filter((val) => {
+        const todo = new Date(val.time);
+        let formatTodo = todo.toDateString();
         return formatTodo == formatYesterday;
-    }
-    let yesterdayList = todoList.filter(yesterdayTodo);
-    console.log(formatYesterday);
-    console.log(yesterdayTodo(todoList));
+    });
 
-    console.log(yesterdayList);
     return yesterdayList
 }

@@ -18,7 +18,7 @@
       <template #content>
         <div @click="goEdit">
           <h4>{{ item.content }}</h4>
-          <p>{{ item.time.toTimeString() }}</p>
+          <p>{{ time }}</p>
         </div>
       </template>
       <template #delete>
@@ -46,7 +46,12 @@ export default {
       type: Number,
     },
   },
-
+  computed: {
+    time() {
+      const date = new Date(this.item.time);
+      return date.toTimeString();
+    },
+  },
   methods: {
     goDelete() {
       this.$store.dispatch("deleteList", this.item.id);
@@ -55,7 +60,10 @@ export default {
     goEdit() {
       // 打开弹层,将本身内容填到文本框中
       // 发送事件到newbutton组件
-      this.$bus.$emit("goEdit", this.index);
+      let oldListIndex = this.$store.state.todoList.findIndex(
+        (val) => val.id === this.$store.state.currentDateTodo[this.index].id
+      );
+      this.$bus.$emit("goEdit", oldListIndex);
     },
     goDone() {
       // 将vuex中done改为true  completeTodoList

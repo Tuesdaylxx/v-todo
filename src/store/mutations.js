@@ -9,6 +9,10 @@ export default {
         let oldListIndex = state.todoList.findIndex(val => val.id === editList.oldList.id)
         state.todoList.splice(oldListIndex, 1, editList.newList);
     },
+    editCurrentList(state, editList) {
+        let oldListIndex = state.todoList.findIndex(val => val.id === editList.oldList.id)
+        state.currentDateTodo.splice(oldListIndex, 1, editList.newList);
+    },
     // 删除待做
     deleteTodoList(state, index) {
         state.todoList.splice(index, 1);
@@ -31,6 +35,7 @@ export default {
     saveSelectTime(state, payload) {
         state.selectTime = payload
     },
+
     // 存入当前选中日期的日程
     saveCurrentList(state, payload) {
         state.currentDateTodo.push(payload)
@@ -43,12 +48,21 @@ export default {
     getYesterdayList(state, payload) {
         state.yesterdayList = payload
     },
+
+    // 获取一周已做
+    getWeekDoneLength(state, payload) {
+        state.weekDoneLength = payload
+    },
+
     //  倒计时
     getCountDown(state, payload) {
         state.countDown = parseFloat(payload) + parseFloat(state.countDown)
         console.log(state.countDown);
         console.log(payload);
     },
+
+
+
 
     // 切换主题
     changeTheme(state, payload) {
